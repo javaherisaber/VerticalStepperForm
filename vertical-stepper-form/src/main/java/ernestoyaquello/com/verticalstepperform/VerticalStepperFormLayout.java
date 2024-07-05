@@ -764,6 +764,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
         LinearLayout button = (LinearLayout) stepLayout.findViewById(R.id.next_step_button_container);
         LinearLayout stepContent = (LinearLayout) stepLayout.findViewById(R.id.step_content);
+        ImageView editStep = (ImageView) stepLayout.findViewById(R.id.edit_step);
 
         if (smoothieDisabling) {
             Animations.slideUp(button);
@@ -781,6 +782,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             enableStepHeader(stepLayout);
             stepDone.setVisibility(View.VISIBLE);
             stepNumberTextView.setVisibility(View.INVISIBLE);
+            editStep.setVisibility(View.VISIBLE);
+        }
+        if ((stepNumber == numberOfSteps) && showConfirmationStep) {
+            editStep.setVisibility(View.GONE);
         }
 
         showVerticalLineInCollapsedStepIfNecessary(stepLayout);
@@ -794,6 +799,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         ImageView stepDone = (ImageView) stepHeader.findViewById(R.id.step_done);
         TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
         LinearLayout button = (LinearLayout) stepLayout.findViewById(R.id.next_step_button_container);
+        ImageView editStep = (ImageView) stepLayout.findViewById(R.id.edit_step);
 
         enableStepHeader(stepLayout);
 
@@ -804,6 +810,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             stepContent.setVisibility(View.VISIBLE);
             button.setVisibility(View.VISIBLE);
         }
+        editStep.setVisibility(View.GONE);
 
         if (completedSteps[stepNumber] && activeStep != stepNumber) {
             stepDone.setVisibility(View.VISIBLE);
@@ -1296,7 +1303,5 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         public void init() {
             verticalStepperFormLayout.initialiseVerticalStepperForm(this);
         }
-
     }
-
 }
