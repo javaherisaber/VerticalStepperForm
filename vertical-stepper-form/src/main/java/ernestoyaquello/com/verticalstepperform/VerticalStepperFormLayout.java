@@ -55,6 +55,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
     protected boolean displayBottomNavigation;
     protected boolean materialDesignInDisabledSteps;
     protected boolean hideKeyboard;
+    protected boolean showConfirmationStep;
     protected boolean showVerticalLineWhenStepsAreCollapsed;
 
     // Views
@@ -245,7 +246,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
             disableStepHeader(stepLayout);
         }
 
-        if (stepNumber < numberOfSteps) {
+        if (stepNumber < numberOfSteps && showConfirmationStep) {
             setStepAsUncompleted(numberOfSteps, null);
         }
 
@@ -390,6 +391,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         this.displayBottomNavigation = true;
         this.materialDesignInDisabledSteps = false;
         this.hideKeyboard = true;
+        this.showConfirmationStep = true;
         this.showVerticalLineWhenStepsAreCollapsed = false;
 
         this.verticalStepperFormImplementation = verticalStepperForm;
@@ -443,6 +445,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         this.displayBottomNavigation = true;
         this.materialDesignInDisabledSteps = false;
         this.hideKeyboard = true;
+        this.showConfirmationStep = true;
         this.showVerticalLineWhenStepsAreCollapsed = false;
 
         this.verticalStepperFormImplementation = verticalStepperForm;
@@ -469,6 +472,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         this.displayBottomNavigation = builder.displayBottomNavigation;
         this.materialDesignInDisabledSteps = builder.materialDesignInDisabledSteps;
         this.hideKeyboard = builder.hideKeyboard;
+        this.showConfirmationStep = builder.showConfirmationStep;
         this.showVerticalLineWhenStepsAreCollapsed = builder.showVerticalLineWhenStepsAreCollapsed;
 
         initStepperForm(builder.steps, builder.stepsSubtitles);
@@ -498,7 +502,9 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         }
         numberOfSteps = steps.length;
         setAuxVars();
-        addConfirmationStepToStepsList();
+        if (showConfirmationStep) {
+            addConfirmationStepToStepsList();
+        }
     }
 
     protected void registerListeners() {
@@ -545,8 +551,10 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         for (int i = 0; i < numberOfSteps; i++) {
             setUpStep(i);
         }
-        // Set up confirmation step
-        setUpStep(numberOfSteps);
+        if (showConfirmationStep) {
+            // Set up confirmation step
+            setUpStep(numberOfSteps);
+        }
     }
 
     protected void setUpStep(int stepNumber) {
@@ -555,7 +563,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
             // The content of the step is the corresponding custom view previously created
             RelativeLayout stepContent = (RelativeLayout) stepLayout.findViewById(R.id.step_content);
             stepContent.addView(stepContentViews.get(stepNumber));
-        } else {
+        } else if (showConfirmationStep) {
             setUpStepLayoutAsConfirmationStepLayout(stepLayout);
         }
         addStepToContent(stepLayout);
@@ -566,7 +574,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
     }
 
     protected void setUpStepLayoutAsConfirmationStepLayout(LinearLayout stepLayout) {
-        LinearLayout stepLeftLine = (LinearLayout) stepLayout.findViewById(R.id.vertical_line);
+        LinearLayout stepLeftLine = (LinearLayout) stepLayout.findViewById(R.id.vertical_line_content);
         LinearLayout stepLeftLine2 = (LinearLayout) stepLayout.findViewById(R.id.vertical_line_subtitle);
         confirmationButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
 
@@ -639,7 +647,11 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToStep((stepNumber + 1), false);
+                if (stepNumber == (numberOfSteps - 1) && !showConfirmationStep) {
+                    prepareSendingAndSend();
+                } else {
+                    goToStep((stepNumber + 1), false);
+                }
             }
         });
 
@@ -654,7 +666,11 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
     }
 
     protected void openStep(int stepNumber, boolean restoration) {
-        if (stepNumber >= 0 && stepNumber <= numberOfSteps) {
+        int lastStepIndex = numberOfSteps;
+        if (showConfirmationStep) {
+            lastStepIndex = numberOfSteps + 1;
+        }
+        if (stepNumber >= 0 && stepNumber < lastStepIndex) {
             activeStep = stepNumber;
 
             if (stepNumber == 0) {
@@ -669,8 +685,8 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
                 disableNextButtonInBottomNavigationLayout();
             }
 
-            for(int i = 0; i <= numberOfSteps; i++) {
-                if(i != stepNumber) {
+            for (int i = 0; i < lastStepIndex; i++) {
+                if (i != stepNumber) {
                     disableStepLayout(i, !restoration);
                 } else {
                     enableStepLayout(i, !restoration);
@@ -871,9 +887,15 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         }
     }
 
+    public void finalizeForm() {
+        prepareSendingAndSend();
+    }
+
     protected void prepareSendingAndSend() {
-        displayDoneIconInConfirmationStep();
-        disableConfirmationButton();
+        if (showConfirmationStep) {
+            displayDoneIconInConfirmationStep();
+            disableConfirmationButton();
+        }
         displayMaxProgress();
         verticalStepperFormImplementation.sendData();
     }
@@ -1031,6 +1053,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
         protected boolean displayBottomNavigation = true;
         protected boolean materialDesignInDisabledSteps = false;
         protected boolean hideKeyboard = true;
+        protected boolean showConfirmationStep = true;
         protected boolean showVerticalLineWhenStepsAreCollapsed = false;
 
         protected Builder(VerticalStepperFormLayout stepperLayout,
@@ -1189,6 +1212,16 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
          */
         public Builder displayBottomNavigation(boolean displayBottomNavigationBar) {
             this.displayBottomNavigation = displayBottomNavigationBar;
+            return this;
+        }
+
+        /**
+         * Set whether or not the confirmation step will be displayed
+         * @param showConfirmationStep true to show it; false otherwise
+         * @return the builder instance
+         */
+        public Builder showConfirmationStep(boolean showConfirmationStep) {
+            this.showConfirmationStep = showConfirmationStep;
             return this;
         }
 

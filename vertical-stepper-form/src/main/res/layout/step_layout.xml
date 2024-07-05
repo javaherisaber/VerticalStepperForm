@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_marginStart="8dp"
     android:layout_marginLeft="8dp"
-    android:layout_marginStart="8dp">
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_marginTop="6dp"
+        android:id="@+id/step_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/step_header"
-        android:clickable="true">
+        android:layout_marginTop="6dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/circle"
             android:layout_width="@dimen/vertical_stepper_circle_size"
             android:layout_height="@dimen/vertical_stepper_circle_size"
-            android:background="@drawable/circle_step_done"
-            android:layout_marginRight="12dp"
-            android:layout_marginEnd="12dp"
-            android:orientation="vertical"
+            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/circle_step_done"
+            android:orientation="vertical"
+            tools:background="@android:color/black">
 
             <TextView
                 android:id="@+id/step_number"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="#ffffff"
                 android:gravity="center"
-                android:textSize="@dimen/vertical_stepper_circle_text_size"/>
+                android:textColor="#ffffff"
+                android:textSize="@dimen/vertical_stepper_circle_text_size" />
 
         </LinearLayout>
 
@@ -39,54 +42,58 @@
             android:id="@+id/step_done"
             android:layout_width="@dimen/vertical_stepper_circle_size"
             android:layout_height="@dimen/vertical_stepper_circle_size"
-            android:src="@drawable/ic_done"
-            android:scaleType="center"
-            android:layout_alignLeft="@id/circle"
             android:layout_alignStart="@id/circle"
+            android:layout_alignLeft="@id/circle"
             android:layout_alignTop="@id/circle"
-            android:visibility="invisible"/>
+            android:scaleType="center"
+            android:src="@drawable/ic_done"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/step_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/vertical_stepper_circle_size"
+            android:layout_toEndOf="@id/circle"
+            android:layout_toRightOf="@id/circle"
             android:gravity="center_vertical"
             android:textColor="#212121"
             android:textSize="@dimen/vertical_stepper_title_text_size"
-            android:layout_toRightOf="@id/circle"
-            android:layout_toEndOf="@id/circle"/>
+            tools:text="Step Title" />
 
         <TextView
             android:id="@+id/step_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/step_title"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/step_title"
-            android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"
-            android:textSize="@dimen/vertical_stepper_subtitle_text_size"
-            android:textColor="#A2A2A2"
+            android:layout_marginLeft="40dp"
             android:paddingBottom="12dp"
-            android:visibility="gone"/>
+            android:textColor="#A2A2A2"
+            android:textSize="@dimen/vertical_stepper_subtitle_text_size"
+            android:visibility="gone"
+            tools:text="Subtitle"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/vertical_line_subtitle"
             android:layout_width="@dimen/vertical_stepper_vertical_line_thickness"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
+            android:layout_height="match_parent"
             android:layout_below="@id/step_title"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginRight="26dp"
-            android:layout_marginEnd="26dp"
             android:layout_alignTop="@id/step_subtitle"
             android:layout_alignBottom="@id/step_subtitle"
-            android:layout_height="match_parent"
-            android:background="#e0e0e0"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginTop="8dp"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:layout_marginEnd="26dp"
+            android:layout_marginRight="26dp"
+            android:background="#e0e0e0"
+            android:orientation="vertical"/>
 
     </RelativeLayout>
 
@@ -96,16 +103,15 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/vertical_line_content"
             android:layout_width="@dimen/vertical_stepper_vertical_line_thickness"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginRight="26dp"
-            android:layout_marginEnd="26dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginEnd="26dp"
+            android:layout_marginRight="26dp"
             android:background="#e0e0e0"
-            android:orientation="vertical"
-            android:id="@+id/vertical_line">
-        </LinearLayout>
+            android:orientation="vertical"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,24 +122,28 @@
                 android:id="@+id/error_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                android:layout_gravity="center_vertical">
+                tools:visibility="visible"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/error_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_error"
+                    android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"/>
+                    android:src="@drawable/ic_error"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/error_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#af1212"
                     android:textSize="@dimen/vertical_stepper_vertical_error_message_text_size"
-                    android:textColor="#af1212"/>
+                    tools:text="Error message" />
 
             </LinearLayout>
 
@@ -153,35 +163,37 @@
 
     <LinearLayout
         android:id="@+id/next_step_button_container"
-        android:layout_marginBottom="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/vertical_line_next"
             android:layout_width="@dimen/vertical_stepper_vertical_line_thickness"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginRight="26dp"
-            android:layout_marginEnd="26dp"
             android:layout_height="match_parent"
-            android:background="#e0e0e0">
-        </LinearLayout>
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginEnd="26dp"
+            android:layout_marginRight="26dp"
+            android:background="#e0e0e0"
+            android:orientation="vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/next_step"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:text="@string/vertical_form_stepper_form_continue"
                 android:textColor="#FFFFFF"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"/>
+                tools:background="@android:color/black" />
 
         </LinearLayout>
 

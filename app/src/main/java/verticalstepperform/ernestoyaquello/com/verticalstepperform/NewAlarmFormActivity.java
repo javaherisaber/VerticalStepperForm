@@ -83,14 +83,15 @@ public class NewAlarmFormActivity extends AppCompatActivity implements VerticalS
         int colorPrimary = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
         int colorPrimaryDark = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
         String[] stepsTitles = getResources().getStringArray(R.array.steps_titles);
-        //String[] stepsSubtitles = getResources().getStringArray(R.array.steps_subtitles);
+        String[] stepsSubtitles = getResources().getStringArray(R.array.steps_subtitles);
 
         // Here we find and initialize the form
         verticalStepperForm = (VerticalStepperFormLayout) findViewById(R.id.vertical_stepper_form);
         VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, stepsTitles, this, this)
-                //.stepsSubtitles(stepsSubtitles)
-                //.materialDesignInDisabledSteps(true) // false by default
-                //.showVerticalLineWhenStepsAreCollapsed(true) // false by default
+                .stepsSubtitles(stepsSubtitles)
+                .materialDesignInDisabledSteps(true) // false by default
+                .showVerticalLineWhenStepsAreCollapsed(true) // false by default
+                .showConfirmationStep(true)
                 .primaryColor(colorPrimary)
                 .primaryDarkColor(colorPrimaryDark)
                 .displayBottomNavigation(true)
