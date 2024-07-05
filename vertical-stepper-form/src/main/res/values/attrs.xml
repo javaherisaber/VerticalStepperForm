@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VerticalStepperFormLayout">
+        <attr name="formBackground" format="color" />
+        <attr name="screenBackground" format="color" />
+    </declare-styleable>
+</resources>
