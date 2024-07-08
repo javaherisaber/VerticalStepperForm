@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ernestoyaquello.com.verticalstepperform.interfaces.StepCompletionListener;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 import ernestoyaquello.com.verticalstepperform.utils.Animations;
 
@@ -89,6 +90,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     // Listeners and callbacks
     protected VerticalStepperForm verticalStepperFormImplementation;
+    protected StepCompletionListener stepCompletionListener;
 
     // Context
     protected Context context;
@@ -214,12 +216,12 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         completedSteps[stepNumber] = true;
 
         LinearLayout stepLayout = stepLayouts.get(stepNumber);
-        RelativeLayout stepHeader = (RelativeLayout) stepLayout.findViewById(R.id.step_header);
-        ImageView stepDone = (ImageView) stepHeader.findViewById(R.id.step_done);
-        TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
-        LinearLayout errorContainer = (LinearLayout) stepLayout.findViewById(R.id.error_container);
-        TextView errorTextView = (TextView) errorContainer.findViewById(R.id.error_message);
-        AppCompatButton nextButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+        ImageView stepDone = stepHeader.findViewById(R.id.step_done);
+        TextView stepNumberTextView = stepHeader.findViewById(R.id.step_number);
+        LinearLayout errorContainer = stepLayout.findViewById(R.id.error_container);
+        TextView errorTextView = errorContainer.findViewById(R.id.error_message);
+        AppCompatButton nextButton = stepLayout.findViewById(R.id.next_step);
 
         enableStepHeader(stepLayout);
 
@@ -242,6 +244,9 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         Animations.slideUp(errorContainer);
 
         displayCurrentProgress();
+        if (stepCompletionListener != null) {
+            stepCompletionListener.onStepCompleted(stepNumber);
+        }
     }
 
     /**
@@ -253,10 +258,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         completedSteps[stepNumber] = false;
 
         LinearLayout stepLayout = stepLayouts.get(stepNumber);
-        RelativeLayout stepHeader = (RelativeLayout) stepLayout.findViewById(R.id.step_header);
-        ImageView stepDone = (ImageView) stepHeader.findViewById(R.id.step_done);
-        TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
-        AppCompatButton nextButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+        ImageView stepDone = stepHeader.findViewById(R.id.step_done);
+        TextView stepNumberTextView = stepHeader.findViewById(R.id.step_number);
+        AppCompatButton nextButton = stepLayout.findViewById(R.id.next_step);
 
         stepDone.setVisibility(View.INVISIBLE);
         stepNumberTextView.setVisibility(View.VISIBLE);
@@ -275,8 +280,8 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         }
 
         if (errorMessage != null && !errorMessage.equals("")) {
-            LinearLayout errorContainer = (LinearLayout) stepLayout.findViewById(R.id.error_container);
-            TextView errorTextView = (TextView) errorContainer.findViewById(R.id.error_message);
+            LinearLayout errorContainer = stepLayout.findViewById(R.id.error_container);
+            TextView errorTextView = errorContainer.findViewById(R.id.error_message);
 
             errorTextView.setText(errorMessage);
             //errorContainer.setVisibility(View.VISIBLE);
@@ -487,6 +492,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     protected void initialiseVerticalStepperForm(Builder builder) {
 
         this.verticalStepperFormImplementation = builder.verticalStepperFormImplementation;
+        this.stepCompletionListener = builder.stepCompletionListener;
         this.activity = builder.activity;
 
         this.alphaOfDisabledElements = builder.alphaOfDisabledElements;
@@ -1083,6 +1089,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         protected VerticalStepperFormLayout verticalStepperFormLayout;
         protected String[] steps;
         protected VerticalStepperForm verticalStepperFormImplementation;
+        protected StepCompletionListener stepCompletionListener;
         protected Activity activity;
 
         // Optional parameters
@@ -1147,6 +1154,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         public Builder primaryColor(int colorPrimary) {
             this.stepNumberBackgroundColor = colorPrimary;
             this.buttonBackgroundColor = colorPrimary;
+            return this;
+        }
+
+        public Builder setStepCompletionListener(StepCompletionListener stepCompletionListener) {
+            this.stepCompletionListener = stepCompletionListener;
             return this;
         }
 
