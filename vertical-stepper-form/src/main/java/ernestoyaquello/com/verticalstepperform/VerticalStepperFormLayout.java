@@ -62,6 +62,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     protected boolean materialDesignInDisabledSteps;
     protected boolean hideKeyboard;
     protected boolean showConfirmationStep;
+    protected boolean showLastStepNextButton;
     protected boolean showVerticalLineWhenStepsAreCollapsed;
     protected int scrollViewBackgroundColor;
     protected int contentViewBackgroundColor;
@@ -424,6 +425,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         this.materialDesignInDisabledSteps = false;
         this.hideKeyboard = true;
         this.showConfirmationStep = true;
+        this.showLastStepNextButton = true;
         this.showVerticalLineWhenStepsAreCollapsed = false;
 
         this.verticalStepperFormImplementation = verticalStepperForm;
@@ -481,6 +483,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         this.materialDesignInDisabledSteps = false;
         this.hideKeyboard = true;
         this.showConfirmationStep = true;
+        this.showLastStepNextButton = true;
         this.showVerticalLineWhenStepsAreCollapsed = false;
 
         this.verticalStepperFormImplementation = verticalStepperForm;
@@ -512,6 +515,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         this.materialDesignInDisabledSteps = builder.materialDesignInDisabledSteps;
         this.hideKeyboard = builder.hideKeyboard;
         this.showConfirmationStep = builder.showConfirmationStep;
+        this.showLastStepNextButton = builder.showLastStepNextButton;
         this.showVerticalLineWhenStepsAreCollapsed = builder.showVerticalLineWhenStepsAreCollapsed;
 
         initStepperForm(builder.steps, builder.stepsSubtitles);
@@ -699,6 +703,9 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
                 }
             }
         });
+        if (!showLastStepNextButton && stepNumber == (numberOfSteps - 1)) {
+            nextButton.setVisibility(View.INVISIBLE);
+        }
 
         stepLayouts.add(stepLayout);
 
@@ -1111,6 +1118,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         protected boolean materialDesignInDisabledSteps = false;
         protected boolean hideKeyboard = true;
         protected boolean showConfirmationStep = true;
+        protected boolean showLastStepNextButton = true;
         protected boolean showVerticalLineWhenStepsAreCollapsed = false;
 
         protected Builder(VerticalStepperFormLayout stepperLayout,
@@ -1239,6 +1247,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
         public Builder showConfirmationStep(boolean showConfirmationStep) {
             this.showConfirmationStep = showConfirmationStep;
+            return this;
+        }
+
+        public Builder showLastStepNextButton(boolean showLastStepNextButton) {
+            this.showLastStepNextButton = showLastStepNextButton;
             return this;
         }
 
