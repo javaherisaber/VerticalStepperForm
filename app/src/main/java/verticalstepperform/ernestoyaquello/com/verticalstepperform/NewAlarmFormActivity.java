@@ -9,9 +9,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -23,8 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
+
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
-import ernestoyaquello.com.verticalstepperform.fragments.BackConfirmationFragment;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 
 public class NewAlarmFormActivity extends AppCompatActivity implements VerticalStepperForm {

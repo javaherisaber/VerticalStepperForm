@@ -12,9 +12,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -29,6 +26,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,7 +167,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
      * @param title New title of the step
      */
     public void setStepTitle(int stepNumber, String title) {
-        if(title != null && !title.equals("")) {
+        if(title != null && !title.isEmpty()) {
             steps.set(stepNumber, title);
             TextView titleView = stepsTitlesViews.get(stepNumber);
             if (titleView != null) {
@@ -181,7 +182,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
      * @param subtitle New subtitle of the step
      */
     public void setStepSubtitle(int stepNumber, String subtitle) {
-        if(stepsSubtitles != null && subtitle != null && !subtitle.equals("")) {
+        if(stepsSubtitles != null && subtitle != null && !subtitle.isEmpty()) {
             stepsSubtitles.set(stepNumber, subtitle);
             TextView subtitleView = stepsSubtitlesViews.get(stepNumber);
             if (subtitleView != null) {
@@ -593,7 +594,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         LinearLayout stepLayout = createStepLayout(stepNumber);
         if (stepNumber < numberOfSteps) {
             // The content of the step is the corresponding custom view previously created
-            LinearLayout stepContent = (LinearLayout) stepLayout.findViewById(R.id.step_content);
+            LinearLayout stepContent = stepLayout.findViewById(R.id.step_content);
             stepContent.addView(stepContentViews.get(stepNumber));
         } else if (showConfirmationStep) {
             setUpStepLayoutAsConfirmationStepLayout(stepLayout);
@@ -608,7 +609,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     protected void setUpStepLayoutAsConfirmationStepLayout(LinearLayout stepLayout) {
         View stepLeftLine =  stepLayout.findViewById(R.id.vertical_line_content);
         View stepLeftLine2 = stepLayout.findViewById(R.id.vertical_line_subtitle);
-        confirmationButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
+        confirmationButton = stepLayout.findViewById(R.id.next_step);
 
         stepLeftLine.setVisibility(View.INVISIBLE);
         stepLeftLine2.setVisibility(View.INVISIBLE);
@@ -630,13 +631,13 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     protected LinearLayout createStepLayout(final int stepNumber) {
         LinearLayout stepLayout = generateStepLayout();
 
-        LinearLayout circle = (LinearLayout) stepLayout.findViewById(R.id.circle);
+        LinearLayout circle = stepLayout.findViewById(R.id.circle);
         Drawable bg = ContextCompat.getDrawable(context, R.drawable.circle_step_done);
         bg.setColorFilter(new PorterDuffColorFilter(
                 stepNumberBackgroundColor, PorterDuff.Mode.SRC_IN));
         circle.setBackground(bg);
 
-        TextView stepTitle = (TextView) stepLayout.findViewById(R.id.step_title);
+        TextView stepTitle = stepLayout.findViewById(R.id.step_title);
         stepTitle.setText(steps.get(stepNumber));
         stepTitle.setTextColor(stepTitleTextColor);
         stepsTitlesViews.add(stepNumber, stepTitle);
@@ -645,7 +646,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         if(stepsSubtitles != null && stepNumber < stepsSubtitles.size()) {
             String subtitle = stepsSubtitles.get(stepNumber);
             if(subtitle != null && !subtitle.equals("")) {
-                stepSubtitle = (TextView) stepLayout.findViewById(R.id.step_subtitle);
+                stepSubtitle = stepLayout.findViewById(R.id.step_subtitle);
                 stepSubtitle.setText(subtitle);
                 stepSubtitle.setTextColor(stepSubtitleTextColor);
                 stepSubtitle.setVisibility(View.VISIBLE);
@@ -653,11 +654,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         }
         stepsSubtitlesViews.add(stepNumber, stepSubtitle);
 
-        TextView stepNumberTextView = (TextView) stepLayout.findViewById(R.id.step_number);
+        TextView stepNumberTextView = stepLayout.findViewById(R.id.step_number);
         stepNumberTextView.setText(String.valueOf(stepNumber + 1));
         stepNumberTextView.setTextColor(stepNumberTextColor);
 
-        ImageView stepDoneImageView = (ImageView) stepLayout.findViewById(R.id.step_done);
+        ImageView stepDoneImageView = stepLayout.findViewById(R.id.step_done);
         stepDoneImageView.setColorFilter(stepNumberTextColor);
         View subtitleVerticalLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
         View contentVerticalLine = stepLayout.findViewById(R.id.vertical_line_content);
@@ -666,12 +667,12 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         contentVerticalLine.setBackgroundColor(verticalLineColor);
         nextVerticalLine.setBackgroundColor(verticalLineColor);
 
-        TextView errorMessage = (TextView) stepLayout.findViewById(R.id.error_message);
-        ImageView errorIcon = (ImageView) stepLayout.findViewById(R.id.error_icon);
+        TextView errorMessage = stepLayout.findViewById(R.id.error_message);
+        ImageView errorIcon = stepLayout.findViewById(R.id.error_icon);
         errorMessage.setTextColor(errorMessageTextColor);
         errorIcon.setColorFilter(errorMessageTextColor);
 
-        RelativeLayout stepHeader = (RelativeLayout) stepLayout.findViewById(R.id.step_header);
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
         stepHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -679,7 +680,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             }
         });
 
-        AppCompatButton nextButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
+        AppCompatButton nextButton = stepLayout.findViewById(R.id.next_step);
         setButtonColor(nextButton,
                 buttonBackgroundColor, buttonTextColor, buttonPressedBackgroundColor, buttonPressedTextColor);
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -762,12 +763,12 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     }
 
     protected void findViews() {
-        content = (LinearLayout) findViewById(R.id.content);
-        stepsScrollView = (ScrollView) findViewById(R.id.steps_scroll);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        previousStepButton = (AppCompatImageButton) findViewById(R.id.down_previous);
-        nextStepButton = (AppCompatImageButton) findViewById(R.id.down_next);
-        bottomNavigation = (LinearLayout) findViewById(R.id.bottom_navigation);
+        content = findViewById(R.id.content);
+        stepsScrollView = findViewById(R.id.steps_scroll);
+        progressBar = findViewById(R.id.progress_bar);
+        previousStepButton = findViewById(R.id.down_previous);
+        nextStepButton = findViewById(R.id.down_next);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
 
         content.setBackgroundColor(contentViewBackgroundColor);
         stepsScrollView.setBackgroundColor(scrollViewBackgroundColor);
@@ -775,12 +776,12 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     protected void disableStepLayout(int stepNumber, boolean smoothieDisabling) {
         LinearLayout stepLayout = stepLayouts.get(stepNumber);
-        RelativeLayout stepHeader = (RelativeLayout) stepLayout.findViewById(R.id.step_header);
-        ImageView stepDone = (ImageView) stepHeader.findViewById(R.id.step_done);
-        TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
-        LinearLayout button = (LinearLayout) stepLayout.findViewById(R.id.next_step_button_container);
-        LinearLayout stepContent = (LinearLayout) stepLayout.findViewById(R.id.step_content);
-        ImageView editStep = (ImageView) stepLayout.findViewById(R.id.edit_step);
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+        ImageView stepDone = stepHeader.findViewById(R.id.step_done);
+        TextView stepNumberTextView = stepHeader.findViewById(R.id.step_number);
+        LinearLayout button = stepLayout.findViewById(R.id.next_step_button_container);
+        LinearLayout stepContent = stepLayout.findViewById(R.id.step_content);
+        ImageView editStep = stepLayout.findViewById(R.id.edit_step);
 
         if (smoothieDisabling) {
             Animations.slideUp(button);
@@ -811,12 +812,12 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     protected void enableStepLayout(int stepNumber, boolean smoothieEnabling) {
         LinearLayout stepLayout = stepLayouts.get(stepNumber);
-        LinearLayout stepContent = (LinearLayout) stepLayout.findViewById(R.id.step_content);
-        RelativeLayout stepHeader = (RelativeLayout) stepLayout.findViewById(R.id.step_header);
-        ImageView stepDone = (ImageView) stepHeader.findViewById(R.id.step_done);
-        TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
-        LinearLayout button = (LinearLayout) stepLayout.findViewById(R.id.next_step_button_container);
-        ImageView editStep = (ImageView) stepLayout.findViewById(R.id.edit_step);
+        LinearLayout stepContent = stepLayout.findViewById(R.id.step_content);
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+        ImageView stepDone = stepHeader.findViewById(R.id.step_done);
+        TextView stepNumberTextView = stepHeader.findViewById(R.id.step_number);
+        LinearLayout button = stepLayout.findViewById(R.id.next_step_button_container);
+        ImageView editStep = stepLayout.findViewById(R.id.edit_step);
 
         enableStepHeader(stepLayout);
 
@@ -952,8 +953,8 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     protected void displayDoneIconInConfirmationStep() {
         LinearLayout confirmationStepLayout = stepLayouts.get(stepLayouts.size() - 1);
-        ImageView stepDone = (ImageView) confirmationStepLayout.findViewById(R.id.step_done);
-        TextView stepNumberTextView = (TextView) confirmationStepLayout.findViewById(R.id.step_number);
+        ImageView stepDone = confirmationStepLayout.findViewById(R.id.step_done);
+        TextView stepNumberTextView = confirmationStepLayout.findViewById(R.id.step_number);
         stepDone.setVisibility(View.VISIBLE);
         stepNumberTextView.setVisibility(View.INVISIBLE);
     }
@@ -971,7 +972,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     }
 
     protected void setVerticalLineNearSubtitleHeightWhenSubtitleIsGone(LinearLayout stepLayout, int height) {
-        TextView stepSubtitle = (TextView) stepLayout.findViewById(R.id.step_subtitle);
+        TextView stepSubtitle = stepLayout.findViewById(R.id.step_subtitle);
         if (stepSubtitle.getVisibility() == View.GONE) {
             View stepLeftLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) stepLeftLine.getLayoutParams();
@@ -983,11 +984,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     protected void setHeaderAppearance(LinearLayout stepLayout, float alpha,
                                        int stepCircleBackgroundColor) {
         if(!materialDesignInDisabledSteps) {
-            RelativeLayout stepHeader = (RelativeLayout) stepLayout.findViewById(R.id.step_header);
-            TextView title = (TextView) stepHeader.findViewById(R.id.step_title);
-            TextView subtitle = (TextView) stepHeader.findViewById(R.id.step_subtitle);
-            LinearLayout circle = (LinearLayout) stepHeader.findViewById(R.id.circle);
-            ImageView done = (ImageView) stepHeader.findViewById(R.id.step_done);
+            RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+            TextView title = stepHeader.findViewById(R.id.step_title);
+            TextView subtitle = stepHeader.findViewById(R.id.step_subtitle);
+            LinearLayout circle = stepHeader.findViewById(R.id.circle);
+            ImageView done = stepHeader.findViewById(R.id.step_done);
 
             title.setAlpha(alpha);
             circle.setAlpha(alpha);
@@ -1001,7 +1002,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
                 }
             }
         } else {
-            LinearLayout circle = (LinearLayout) stepLayout.findViewById(R.id.circle);
+            LinearLayout circle = stepLayout.findViewById(R.id.circle);
             Drawable bg = ContextCompat.getDrawable(context, R.drawable.circle_step_done);
             bg.setColorFilter(new PorterDuffColorFilter(stepCircleBackgroundColor, PorterDuff.Mode.SRC_IN));
             circle.setBackground(bg);
@@ -1029,7 +1030,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
                         buttonPressedTextColor,
                         buttonTextColor
                 });
-        button.setSupportBackgroundTintList(buttonColours);
+        button.setBackgroundTintList(buttonColours);
         button.setTextColor(buttonTextColours);
     }
 
