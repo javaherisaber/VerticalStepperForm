@@ -290,6 +290,9 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         }
 
         displayCurrentProgress();
+        if (stepCompletionListener != null) {
+            stepCompletionListener.onStepUncompleted(stepNumber);
+        }
     }
 
     /**
