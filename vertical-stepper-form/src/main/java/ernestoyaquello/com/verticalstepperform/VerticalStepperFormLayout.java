@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -96,6 +97,8 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     // Context
     protected Context context;
     protected Activity activity;
+
+    private static final String TAG = "VerticalStepperFormLayout";
 
     public VerticalStepperFormLayout(Context context) {
         super(context);
@@ -216,6 +219,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     public void setStepAsCompleted(int stepNumber) {
         completedSteps[stepNumber] = true;
 
+        if (stepLayouts.isEmpty()) {
+            Log.e(TAG, "No step layout found for stepNumber: " + stepNumber);
+            return;
+        }
         LinearLayout stepLayout = stepLayouts.get(stepNumber);
         RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
         ImageView stepDone = stepHeader.findViewById(R.id.step_done);
@@ -258,6 +265,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     public void setStepAsUncompleted(int stepNumber, String errorMessage) {
         completedSteps[stepNumber] = false;
 
+        if (stepLayouts.isEmpty()) {
+            Log.e(TAG, "No step layout found for stepNumber: " + stepNumber);
+            return;
+        }
         LinearLayout stepLayout = stepLayouts.get(stepNumber);
         RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
         ImageView stepDone = stepHeader.findViewById(R.id.step_done);
