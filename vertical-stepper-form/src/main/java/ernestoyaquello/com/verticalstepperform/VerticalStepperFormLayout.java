@@ -601,6 +601,18 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             // Set up confirmation step
             setUpStep(numberOfSteps);
         }
+        addFormGap();
+    }
+
+    private void addFormGap() {
+        View formBottomGap = new View(context);
+        int height = (int) getResources().getDimension(R.dimen.vertical_stepper_bottom_gap);
+        int paddingVertical = (int) getResources().getDimension(R.dimen.vertical_stepper_padding_vertical);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height);
+        params.setMargins(0, paddingVertical, 0, 0);
+        formBottomGap.setLayoutParams(params);
+        formBottomGap.setBackgroundColor(scrollViewBackgroundColor);
+        content.addView(formBottomGap);
     }
 
     protected void setUpStep(int stepNumber) {
@@ -616,6 +628,8 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     }
 
     protected void addStepToContent(LinearLayout stepLayout) {
+        int paddingHorizontal = (int) getResources().getDimension(R.dimen.vertical_stepper_padding_horizontal);
+        stepLayout.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
         content.addView(stepLayout);
     }
 
@@ -708,6 +722,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         });
         if (!showLastStepNextButton && stepNumber == (numberOfSteps - 1)) {
             nextButton.setVisibility(View.GONE);
+        }
+        if (!showLastStepNextButton && numberOfSteps > 1 && stepNumber == (numberOfSteps - 1)) {
+            contentVerticalLine.setVisibility(View.INVISIBLE);
+            nextVerticalLine.setVisibility(View.INVISIBLE);
+            subtitleVerticalLine.setVisibility(View.INVISIBLE);
         }
 
         stepLayouts.add(stepLayout);
