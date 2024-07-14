@@ -219,7 +219,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     public void setStepAsCompleted(int stepNumber) {
         completedSteps[stepNumber] = true;
 
-        if (stepLayouts.isEmpty()) {
+        if (stepLayouts == null || stepLayouts.isEmpty()) {
             Log.e(TAG, "No step layout found for stepNumber: " + stepNumber);
             return;
         }
@@ -265,7 +265,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     public void setStepAsUncompleted(int stepNumber, String errorMessage) {
         completedSteps[stepNumber] = false;
 
-        if (stepLayouts.isEmpty()) {
+        if (stepLayouts == null || stepLayouts.isEmpty()) {
             Log.e(TAG, "No step layout found for stepNumber: " + stepNumber);
             return;
         }
