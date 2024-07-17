@@ -864,6 +864,12 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         TextView stepNumberTextView = stepHeader.findViewById(R.id.step_number);
         LinearLayout button = stepLayout.findViewById(R.id.next_step_button_container);
         ImageView editStep = stepLayout.findViewById(R.id.edit_step);
+        View subtitleVerticalLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
+        View contentVerticalLine = stepLayout.findViewById(R.id.vertical_line_content);
+        View nextVerticalLine = stepLayout.findViewById(R.id.vertical_line_next);
+        subtitleVerticalLine.setBackgroundColor(verticalLineColor);
+        contentVerticalLine.setBackgroundColor(verticalLineColor);
+        nextVerticalLine.setBackgroundColor(verticalLineColor);
 
         enableStepHeader(stepLayout);
 
@@ -895,6 +901,14 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     protected void disableStepHeader(LinearLayout stepLayout) {
         setHeaderAppearance(stepLayout, alphaOfDisabledElements, stepNumberDisabledBackgroundColor);
+        if (materialDesignInDisabledSteps) {
+            View subtitleVerticalLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
+            View contentVerticalLine = stepLayout.findViewById(R.id.vertical_line_content);
+            View nextVerticalLine = stepLayout.findViewById(R.id.vertical_line_next);
+            subtitleVerticalLine.setBackgroundColor(stepNumberDisabledBackgroundColor);
+            contentVerticalLine.setBackgroundColor(stepNumberDisabledBackgroundColor);
+            nextVerticalLine.setBackgroundColor(stepNumberDisabledBackgroundColor);
+        }
     }
 
     protected void showVerticalLineInCollapsedStepIfNecessary(LinearLayout stepLayout) {
