@@ -71,7 +71,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     // Views
     protected LayoutInflater mInflater;
     protected LinearLayout content;
-    protected ScrollView stepsScrollView;
+    public ScrollView stepsScrollView;
     protected List<LinearLayout> stepLayouts;
     protected List<View> stepContentViews;
     protected List<TextView> stepsTitlesViews;
