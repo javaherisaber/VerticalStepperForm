@@ -733,8 +733,6 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         });
         if (!showLastStepNextButton && stepNumber == (numberOfSteps - 1)) {
             nextButton.setVisibility(View.GONE);
-        }
-        if (!showLastStepNextButton && numberOfSteps > 1 && stepNumber == (numberOfSteps - 1)) {
             contentVerticalLine.setVisibility(View.INVISIBLE);
             nextVerticalLine.setVisibility(View.INVISIBLE);
             subtitleVerticalLine.setVisibility(View.INVISIBLE);
