@@ -93,6 +93,9 @@ public class NewAlarmFormActivity extends AppCompatActivity implements VerticalS
                 .showVerticalLineWhenStepsAreCollapsed(true) // false by default
                 .showConfirmationStep(true)
                 .primaryColor(colorPrimary)
+                .showConfirmationStep(false)
+                .showLastStepNextButton(false)
+                .verticalLineColor(Color.RED)
                 .primaryDarkColor(colorPrimaryDark)
                 .displayBottomNavigation(true)
                 .init();

@@ -67,6 +67,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:textColor="#212121"
+                android:textStyle="bold"
                 android:textSize="@dimen/vertical_stepper_title_text_size"
                 tools:text="Step Title" />
 
@@ -87,10 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title_layout"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_marginStart="40dp"
-            android:layout_marginLeft="40dp"
-            android:paddingBottom="12dp"
+            android:paddingBottom="24dp"
             android:textColor="#A2A2A2"
             android:textSize="@dimen/vertical_stepper_subtitle_text_size"
             android:visibility="gone"
@@ -105,14 +104,10 @@
             android:layout_alignTop="@id/step_subtitle"
             android:layout_alignBottom="@id/step_subtitle"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="13dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="26dp"
-            android:layout_marginRight="26dp"
-            android:background="#e0e0e0"
-            android:orientation="vertical" />
+            android:background="@drawable/bg_vertical_curved" />
 
     </RelativeLayout>
 
@@ -125,8 +120,8 @@
             android:id="@+id/vertical_line_content"
             android:layout_width="@dimen/vertical_stepper_vertical_line_thickness"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"
             android:layout_marginEnd="26dp"
             android:layout_marginRight="26dp"
             android:background="#e0e0e0"
@@ -192,11 +187,11 @@
             android:id="@+id/vertical_line_next"
             android:layout_width="@dimen/vertical_stepper_vertical_line_thickness"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"
             android:layout_marginEnd="26dp"
             android:layout_marginRight="26dp"
-            android:background="#e0e0e0"
+            android:background="@drawable/bg_bottom_curved"
             android:orientation="vertical" />
 
         <LinearLayout

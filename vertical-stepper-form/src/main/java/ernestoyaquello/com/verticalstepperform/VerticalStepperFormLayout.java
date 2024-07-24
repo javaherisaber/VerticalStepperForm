@@ -202,6 +202,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         setStepSubtitle(activeStep, subtitle);
     }
 
+    public void closeActiveStep() {
+        disableStepLayout(activeStep, true);
+    }
+
     /**
      * Set the active step as completed
      */
@@ -706,9 +710,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         View subtitleVerticalLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
         View contentVerticalLine = stepLayout.findViewById(R.id.vertical_line_content);
         View nextVerticalLine = stepLayout.findViewById(R.id.vertical_line_next);
-        subtitleVerticalLine.setBackgroundColor(verticalLineColor);
-        contentVerticalLine.setBackgroundColor(verticalLineColor);
-        nextVerticalLine.setBackgroundColor(verticalLineColor);
+        setVerticalLinesColor(stepLayout, verticalLineColor, false);
 
         TextView errorMessage = stepLayout.findViewById(R.id.error_message);
         ImageView errorIcon = stepLayout.findViewById(R.id.error_icon);
@@ -834,6 +836,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         LinearLayout button = stepLayout.findViewById(R.id.next_step_button_container);
         LinearLayout stepContent = stepLayout.findViewById(R.id.step_content);
         ImageView editStep = stepLayout.findViewById(R.id.edit_step);
+        TextView subtitle = stepHeader.findViewById(R.id.step_subtitle);
+        if(subtitle.getText() != null && !subtitle.getText().equals("")) {
+            subtitle.setVisibility(View.VISIBLE);
+        }
 
         if (smoothieDisabling) {
             Animations.slideUp(button);
@@ -859,7 +865,6 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         }
 
         showVerticalLineInCollapsedStepIfNecessary(stepLayout);
-
     }
 
     protected void enableStepLayout(int stepNumber, boolean smoothieEnabling) {
@@ -870,12 +875,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         TextView stepNumberTextView = stepHeader.findViewById(R.id.step_number);
         LinearLayout button = stepLayout.findViewById(R.id.next_step_button_container);
         ImageView editStep = stepLayout.findViewById(R.id.edit_step);
-        View subtitleVerticalLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
-        View contentVerticalLine = stepLayout.findViewById(R.id.vertical_line_content);
-        View nextVerticalLine = stepLayout.findViewById(R.id.vertical_line_next);
-        subtitleVerticalLine.setBackgroundColor(verticalLineColor);
-        contentVerticalLine.setBackgroundColor(verticalLineColor);
-        nextVerticalLine.setBackgroundColor(verticalLineColor);
+        TextView subtitle = stepHeader.findViewById(R.id.step_subtitle);
+        setVerticalLinesColor(stepLayout, verticalLineColor, false);
+        if(subtitle.getText() != null && !subtitle.getText().equals("")) {
+            subtitle.setVisibility(View.GONE);
+        }
 
         enableStepHeader(stepLayout);
 
@@ -898,7 +902,34 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         }
 
         hideVerticalLineInCollapsedStepIfNecessary(stepLayout);
+    }
 
+    private void setVerticalLinesColor(LinearLayout stepLayout, int color, boolean disable) {
+        View subtitleVerticalLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
+        View contentVerticalLine = stepLayout.findViewById(R.id.vertical_line_content);
+        View nextVerticalLine = stepLayout.findViewById(R.id.vertical_line_next);
+        if (disable) {
+            if (contentVerticalLine.getVisibility() == View.GONE) {
+                subtitleVerticalLine.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_vertical_curved));
+            } else {
+                subtitleVerticalLine.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_top_curved));
+                contentVerticalLine.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_bottom_curved));
+                Drawable contentBackground = contentVerticalLine.getBackground();
+                contentBackground.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+            }
+            Drawable subtitleBackground = subtitleVerticalLine.getBackground();
+            subtitleBackground.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+        } else {
+            contentVerticalLine.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_top_curved));
+            subtitleVerticalLine.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_vertical_curved));
+            nextVerticalLine.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_bottom_curved));
+            Drawable contentBackground = contentVerticalLine.getBackground();
+            Drawable nextBackground = nextVerticalLine.getBackground();
+            Drawable subtitleBackground = subtitleVerticalLine.getBackground();
+            subtitleBackground.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+            nextBackground.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+            contentBackground.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+        }
     }
 
     protected void enableStepHeader(LinearLayout stepLayout) {
@@ -908,12 +939,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     protected void disableStepHeader(LinearLayout stepLayout) {
         setHeaderAppearance(stepLayout, alphaOfDisabledElements, stepNumberDisabledBackgroundColor);
         if (materialDesignInDisabledSteps) {
-            View subtitleVerticalLine = stepLayout.findViewById(R.id.vertical_line_subtitle);
-            View contentVerticalLine = stepLayout.findViewById(R.id.vertical_line_content);
-            View nextVerticalLine = stepLayout.findViewById(R.id.vertical_line_next);
-            subtitleVerticalLine.setBackgroundColor(stepNumberDisabledBackgroundColor);
-            contentVerticalLine.setBackgroundColor(stepNumberDisabledBackgroundColor);
-            nextVerticalLine.setBackgroundColor(stepNumberDisabledBackgroundColor);
+            setVerticalLinesColor(stepLayout, stepNumberDisabledBackgroundColor, true);
         }
     }
 
@@ -1047,28 +1073,16 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         }
     }
 
-    protected void setHeaderAppearance(LinearLayout stepLayout, float alpha,
-                                       int stepCircleBackgroundColor) {
+    protected void setHeaderAppearance(LinearLayout stepLayout, float alpha, int stepCircleBackgroundColor) {
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+        TextView title = stepHeader.findViewById(R.id.step_title);
+        LinearLayout circle = stepHeader.findViewById(R.id.circle);
+        ImageView done = stepHeader.findViewById(R.id.step_done);
         if(!materialDesignInDisabledSteps) {
-            RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
-            TextView title = stepHeader.findViewById(R.id.step_title);
-            TextView subtitle = stepHeader.findViewById(R.id.step_subtitle);
-            LinearLayout circle = stepHeader.findViewById(R.id.circle);
-            ImageView done = stepHeader.findViewById(R.id.step_done);
-
             title.setAlpha(alpha);
             circle.setAlpha(alpha);
             done.setAlpha(alpha);
-
-            if(subtitle.getText() != null && !subtitle.getText().equals("")) {
-                if(alpha == 1) {
-                    subtitle.setVisibility(View.VISIBLE);
-                } else {
-                    subtitle.setVisibility(View.GONE);
-                }
-            }
         } else {
-            LinearLayout circle = stepLayout.findViewById(R.id.circle);
             Drawable bg = ContextCompat.getDrawable(context, R.drawable.circle_step_done);
             bg.setColorFilter(new PorterDuffColorFilter(stepCircleBackgroundColor, PorterDuff.Mode.SRC_IN));
             circle.setBackground(bg);
