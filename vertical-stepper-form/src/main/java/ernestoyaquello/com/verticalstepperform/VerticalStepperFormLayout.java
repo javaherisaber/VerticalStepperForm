@@ -188,13 +188,18 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
      * @param subtitle New subtitle of the step
      */
     public void setStepSubtitle(int stepNumber, String subtitle) {
-        if(stepsSubtitles != null && subtitle != null && !subtitle.isEmpty()) {
+        if(stepsSubtitles != null && subtitle != null && !subtitle.isEmpty() && stepNumber < stepsSubtitles.size()) {
             stepsSubtitles.set(stepNumber, subtitle);
             TextView subtitleView = stepsSubtitlesViews.get(stepNumber);
             if (subtitleView != null) {
                 subtitleView.setText(subtitle);
+                subtitleView.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    public void setActiveStepSubtitle(String subtitle) {
+        setStepSubtitle(activeStep, subtitle);
     }
 
     /**
@@ -683,10 +688,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         TextView stepSubtitle = null;
         if(stepsSubtitles != null && stepNumber < stepsSubtitles.size()) {
             String subtitle = stepsSubtitles.get(stepNumber);
+            stepSubtitle = stepLayout.findViewById(R.id.step_subtitle);
+            stepSubtitle.setTextColor(stepSubtitleTextColor);
             if(subtitle != null && !subtitle.equals("")) {
-                stepSubtitle = stepLayout.findViewById(R.id.step_subtitle);
                 stepSubtitle.setText(subtitle);
-                stepSubtitle.setTextColor(stepSubtitleTextColor);
                 stepSubtitle.setVisibility(View.VISIBLE);
             }
         }
