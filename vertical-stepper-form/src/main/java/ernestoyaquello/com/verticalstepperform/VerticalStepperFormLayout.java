@@ -789,6 +789,9 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     }
 
     protected void scrollToStep(final int stepNumber, boolean smoothScroll) {
+        if (stepLayouts == null || stepNumber >= stepLayouts.size()) {
+            return;
+        }
         if (smoothScroll) {
             stepsScrollView.post(new Runnable() {
                 public void run() {
