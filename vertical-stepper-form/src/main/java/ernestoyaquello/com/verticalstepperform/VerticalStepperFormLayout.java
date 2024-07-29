@@ -387,6 +387,8 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             if (stepNumber == 0 || previousStepsAreCompleted) {
                 openStep(stepNumber, restoration);
             }
+        } else if (isStepCompleted(stepNumber)) {
+            openStep(stepNumber, false);
         }
     }
 
@@ -837,6 +839,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         LinearLayout stepContent = stepLayout.findViewById(R.id.step_content);
         ImageView editStep = stepLayout.findViewById(R.id.edit_step);
         TextView subtitle = stepHeader.findViewById(R.id.step_subtitle);
+        TextView errorTextView = stepLayout.findViewById(R.id.error_message);
         if(subtitle.getText() != null && !subtitle.getText().equals("")) {
             subtitle.setVisibility(View.VISIBLE);
         }
@@ -858,6 +861,8 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             enableStepHeader(stepLayout);
             stepDone.setVisibility(View.VISIBLE);
             stepNumberTextView.setVisibility(View.INVISIBLE);
+        }
+        if (completedSteps[stepNumber] || !errorTextView.getText().toString().isBlank()) {
             editStep.setVisibility(View.VISIBLE);
         }
         if ((stepNumber == numberOfSteps) && showConfirmationStep) {
