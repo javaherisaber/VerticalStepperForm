@@ -193,7 +193,6 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             TextView subtitleView = stepsSubtitlesViews.get(stepNumber);
             if (subtitleView != null) {
                 subtitleView.setText(subtitle);
-                subtitleView.setVisibility(View.VISIBLE);
             }
         }
     }
