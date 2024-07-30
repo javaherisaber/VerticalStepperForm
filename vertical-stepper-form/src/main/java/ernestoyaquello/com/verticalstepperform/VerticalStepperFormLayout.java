@@ -862,7 +862,8 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             stepDone.setVisibility(View.VISIBLE);
             stepNumberTextView.setVisibility(View.INVISIBLE);
         }
-        if (completedSteps[stepNumber] || !errorTextView.getText().toString().isBlank()) {
+        if (completedSteps[stepNumber] || !errorTextView.getText().toString().isBlank()
+                || subtitle.getVisibility() == View.VISIBLE) {
             editStep.setVisibility(View.VISIBLE);
         }
         if ((stepNumber == numberOfSteps) && showConfirmationStep) {
