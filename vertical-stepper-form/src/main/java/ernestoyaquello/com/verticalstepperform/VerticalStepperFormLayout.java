@@ -188,13 +188,16 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
      * @param subtitle New subtitle of the step
      */
     public void setStepSubtitle(int stepNumber, String subtitle) {
-        if(stepsSubtitles != null && subtitle != null && !subtitle.isEmpty() && stepNumber < stepsSubtitles.size()) {
-            stepsSubtitles.set(stepNumber, subtitle);
-            TextView subtitleView = stepsSubtitlesViews.get(stepNumber);
-            if (subtitleView != null) {
-                subtitleView.setText(subtitle);
-            }
+        if (stepsSubtitles == null || stepNumber >= stepsSubtitles.size()
+                || stepsSubtitlesViews == null || stepNumber >= stepsSubtitlesViews.size()) {
+            return;
         }
+        stepsSubtitles.set(stepNumber, subtitle);
+        TextView subtitleView = stepsSubtitlesViews.get(stepNumber);
+        if (subtitleView == null) {
+            return;
+        }
+        subtitleView.setText(subtitle);
     }
 
     public void setActiveStepSubtitle(String subtitle) {
@@ -218,6 +221,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
      */
     public void setActiveStepAsUncompleted(String errorMessage) {
         setStepAsUncompleted(activeStep, errorMessage);
+        setStepSubtitle(activeStep, null);
     }
 
     /**
@@ -410,118 +414,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         setStepAsUncompleted(stepNumber, null);
     }
 
-    /**
-     * Set up and initialize the form
-     * @param stepsTitles names of the steps
-     * @param colorPrimary primary color
-     * @param colorPrimaryDark primary color (dark)
-     * @param verticalStepperForm instance that implements the interface "VerticalStepperForm"
-     * @param activity activity where the form is
-     *
-     * @deprecated use {@link Builder#newInstance(VerticalStepperFormLayout, String[], VerticalStepperForm, Activity)} instead like this:
-     * <blockquote><pre>
-     * VerticalStepperFormLayout.Builder.newInstance(verticalStepperFormLayout, stepsTitles, verticalStepperForm, activity)<br>
-     *     .primaryColor(colorPrimary)<br>
-     *     .primaryDarkColor(colorPrimaryDark)<br>
-     *     .init();
-     * </pre></blockquote>
-     */
-    @Deprecated
-    public void initialiseVerticalStepperForm(String[] stepsTitles,
-                                              int colorPrimary, int colorPrimaryDark,
-                                              VerticalStepperForm verticalStepperForm,
-                                              Activity activity) {
-
-        this.alphaOfDisabledElements = 0.25f;
-        this.buttonTextColor = Color.rgb(255, 255, 255);
-        this.buttonPressedTextColor = Color.rgb(255, 255, 255);
-        this.stepNumberTextColor = Color.rgb(255, 255, 255);
-        this.stepNumberDisabledTextColor = Color.rgb(255, 255, 255);
-        this.stepTitleTextColor = Color.rgb(33, 33, 33);
-        this.stepSubtitleTextColor = Color.rgb(162, 162, 162);
-        this.stepNumberBackgroundColor = colorPrimary;
-        this.stepNumberDisabledBackgroundColor = Color.rgb(176, 176, 176);
-        this.buttonBackgroundColor = colorPrimary;
-        this.buttonPressedBackgroundColor = colorPrimaryDark;
-        this.verticalLineColor =  Color.rgb(224, 224, 224);
-        this.errorMessageTextColor = Color.rgb(175, 18, 18);
-        this.displayBottomNavigation = true;
-        this.materialDesignInDisabledSteps = false;
-        this.hideKeyboard = true;
-        this.showConfirmationStep = true;
-        this.showLastStepNextButton = true;
-        this.showVerticalLineWhenStepsAreCollapsed = false;
-
-        this.verticalStepperFormImplementation = verticalStepperForm;
-        this.activity = activity;
-
-        initStepperForm(stepsTitles, null);
-    }
-
-    /**
-     * Set up and initialize the form
-     * @param stepsTitles names of the steps
-     * @param buttonBackgroundColor background colour of the buttons
-     * @param buttonTextColor text color of the buttons
-     * @param buttonPressedBackgroundColor background color of the buttons when clicked
-     * @param buttonPressedTextColor text color of the buttons when clicked
-     * @param stepNumberBackgroundColor background color of the left circles
-     * @param stepNumberTextColor text color of the left circles
-     * @param verticalStepperForm instance that implements the interface "VerticalStepperForm"
-     * @param activity activity where the form is
-     *
-     * @deprecated use {@link Builder#newInstance(VerticalStepperFormLayout, String[], VerticalStepperForm, Activity)} instead like this:
-     * <blockquote><pre>
-     * VerticalStepperFormLayout.Builder.newInstance(verticalStepperFormLayout, stepsTitles, verticalStepperForm, activity)<br>
-     *     .buttonBackgroundColor(buttonBackgroundColor)<br>
-     *     .buttonTextColor(buttonTextColor)<br>
-     *     .buttonPressedBackgroundColor(buttonPressedBackgroundColor)<br>
-     *     .buttonPressedTextColor(buttonPressedTextColor)<br>
-     *     .stepNumberBackgroundColor(stepNumberBackgroundColor)<br>
-     *     .stepNumberTextColor(stepNumberTextColor)<br>
-     *     .init();
-     * </pre></blockquote>
-     */
-    @Deprecated
-    public void initialiseVerticalStepperForm(String[] stepsTitles,
-                                              int buttonBackgroundColor, int buttonTextColor,
-                                              int buttonPressedBackgroundColor, int buttonPressedTextColor,
-                                              int stepNumberBackgroundColor, int stepNumberTextColor,
-                                              VerticalStepperForm verticalStepperForm,
-                                              Activity activity) {
-
-        this.alphaOfDisabledElements = 0.25f;
-        this.buttonBackgroundColor = buttonBackgroundColor;
-        this.buttonTextColor = buttonTextColor;
-        this.buttonPressedBackgroundColor = buttonPressedBackgroundColor;
-        this.buttonPressedTextColor = buttonPressedTextColor;
-        this.stepNumberBackgroundColor = stepNumberBackgroundColor;
-        this.stepNumberDisabledBackgroundColor = Color.rgb(176, 176, 176);
-        this.stepTitleTextColor = Color.rgb(33, 33, 33);
-        this.stepSubtitleTextColor = Color.rgb(162, 162, 162);
-        this.stepNumberTextColor = stepNumberTextColor;
-        this.stepNumberDisabledTextColor = Color.rgb(255, 255, 255);
-        this.errorMessageTextColor = Color.rgb(175, 18, 18);
-        this.verticalLineColor = Color.rgb(224, 224, 224);
-        this.displayBottomNavigation = true;
-        this.materialDesignInDisabledSteps = false;
-        this.hideKeyboard = true;
-        this.showConfirmationStep = true;
-        this.showLastStepNextButton = true;
-        this.showVerticalLineWhenStepsAreCollapsed = false;
-
-        this.verticalStepperFormImplementation = verticalStepperForm;
-        this.activity = activity;
-
-        initStepperForm(stepsTitles, null);
-    }
-
     protected void initialiseVerticalStepperForm(Builder builder) {
-
         this.verticalStepperFormImplementation = builder.verticalStepperFormImplementation;
         this.stepCompletionListener = builder.stepCompletionListener;
         this.activity = builder.activity;
-
         this.alphaOfDisabledElements = builder.alphaOfDisabledElements;
         this.stepNumberBackgroundColor = builder.stepNumberBackgroundColor;
         this.stepNumberDisabledBackgroundColor = builder.stepNumberDisabledBackgroundColor;
