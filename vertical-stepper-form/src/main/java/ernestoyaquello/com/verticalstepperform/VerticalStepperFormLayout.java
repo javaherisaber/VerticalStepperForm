@@ -205,7 +205,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     }
 
     public void closeActiveStep() {
-        disableStepLayout(activeStep, true);
+        closeStep(activeStep);
+    }
+
+    public void closeStep(int stepNumber) {
+        disableStepLayout(stepNumber, true);
     }
 
     /**
@@ -213,6 +217,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
      */
     public void setActiveStepAsCompleted() {
         setStepAsCompleted(activeStep);
+    }
+
+    public void setActiveStepAsCompleted(String subtitle) {
+        setActiveStepAsCompleted();
+        setActiveStepSubtitle(subtitle);
     }
 
     /**
