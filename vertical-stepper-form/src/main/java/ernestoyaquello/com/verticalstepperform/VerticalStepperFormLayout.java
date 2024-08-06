@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
@@ -224,6 +225,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         setActiveStepSubtitle(subtitle);
     }
 
+    public void setActiveStepAsCompleted(@StringRes int subtitle) {
+        setActiveStepAsCompleted(context.getString(subtitle));
+    }
+
     /**
      * Set the active step as not completed
      * @param errorMessage Error message that will be displayed (null for no message)
@@ -231,6 +236,10 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     public void setActiveStepAsUncompleted(String errorMessage) {
         setStepAsUncompleted(activeStep, errorMessage);
         setStepSubtitle(activeStep, null);
+    }
+
+    public void setActiveStepAsUncompleted(@StringRes int errorMessage) {
+        setActiveStepAsUncompleted(context.getString(errorMessage));
     }
 
     /**
@@ -406,9 +415,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     /**
      * Set the active step as not completed
-     * @deprecated use {@link #setActiveStepAsUncompleted(String)} instead
      */
-    @Deprecated
     public void setActiveStepAsUncompleted() {
         setStepAsUncompleted(activeStep, null);
     }
@@ -416,9 +423,7 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     /**
      * Set the selected step as not completed
      * @param stepNumber the step number (counting from 0)
-     * @deprecated use {@link #setStepAsUncompleted(int, String)} instead
      */
-    @Deprecated
     public void setStepAsUncompleted(int stepNumber) {
         setStepAsUncompleted(stepNumber, null);
     }
