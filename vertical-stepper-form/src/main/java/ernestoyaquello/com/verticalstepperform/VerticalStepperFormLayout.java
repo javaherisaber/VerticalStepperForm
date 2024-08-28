@@ -860,8 +860,15 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     protected void showVerticalLineInCollapsedStepIfNecessary(LinearLayout stepLayout) {
         // The height of the line will be 16dp when the subtitle textview is gone
+        TextView errorTextView = stepLayout.findViewById(R.id.error_message);
+        int height;
+        if (errorTextView.getText().toString().isBlank()) {
+            height = 16;
+        } else {
+            height = 0;
+        }
         if(showVerticalLineWhenStepsAreCollapsed) {
-            setVerticalLineNearSubtitleHeightWhenSubtitleIsGone(stepLayout, 16);
+            setVerticalLineNearSubtitleHeightWhenSubtitleIsGone(stepLayout, height);
         }
     }
 
