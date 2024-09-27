@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -584,6 +585,20 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
         // Some content could be added to the final step inside stepContent layout
         // RelativeLayout stepContent = (RelativeLayout) stepLayout.findViewById(R.id.step_content);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        try {
+            if (getWindowToken() == null || !isAttachedToWindow()) {
+                Log.w("VerticalStepperFormLayout", "Attempt to process touch event while view is not attached");
+                return false;
+            }
+            return super.dispatchTouchEvent(ev);
+        } catch (NullPointerException e) {
+            Log.w("VerticalStepperFormLayout", "Attempt to process touch event while view is not attached");
+            return false;
+        }
     }
 
     protected LinearLayout createStepLayout(final int stepNumber) {
