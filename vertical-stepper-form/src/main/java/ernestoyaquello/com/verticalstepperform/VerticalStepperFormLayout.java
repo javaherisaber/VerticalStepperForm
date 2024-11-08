@@ -873,6 +873,28 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         }
     }
 
+    /**
+     * Hides the Next button of the current active step by setting its visibility to GONE.
+     */
+    public void hideNextButtonOfTheCurrentStep() {
+        LinearLayout stepLayout = stepLayouts.get(activeStep);
+        AppCompatButton nextButton = stepLayout.findViewById(R.id.next_step);
+        if (nextButton != null) {
+            nextButton.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Shows the Next button of the current active step if it was previously hidden.
+     */
+    public void showNextButtonOfTheCurrentStep() {
+        LinearLayout stepLayout = stepLayouts.get(activeStep);
+        AppCompatButton nextButton = stepLayout.findViewById(R.id.next_step);
+        if (nextButton != null) {
+            nextButton.setVisibility(View.VISIBLE);
+        }
+    }
+
     protected void showVerticalLineInCollapsedStepIfNecessary(LinearLayout stepLayout) {
         // The height of the line will be 16dp when the subtitle textview is gone
         TextView errorTextView = stepLayout.findViewById(R.id.error_message);
