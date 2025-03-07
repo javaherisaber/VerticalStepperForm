@@ -214,6 +214,52 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         disableStepLayout(stepNumber, true);
     }
 
+    public void removeSteps(int... stepNumbers) {
+        // Sort the step numbers in descending order to avoid index shifting issues
+        Arrays.sort(stepNumbers);
+        for (int i = stepNumbers.length - 1; i >= 0; i--) {
+            int stepNumber = stepNumbers[i];
+            if (stepNumber < 0 || stepNumber >= numberOfSteps) {
+                Log.e(TAG, "Invalid step number: " + stepNumber);
+                continue;
+            }
+
+            // Remove the step layout from the parent view
+            LinearLayout stepLayout = stepLayouts.get(stepNumber);
+            content.removeView(stepLayout);
+
+            // Remove the step from internal lists
+            stepLayouts.remove(stepNumber);
+            steps.remove(stepNumber);
+            if (stepsSubtitles != null) {
+                stepsSubtitles.remove(stepNumber);
+            }
+            stepContentViews.remove(stepNumber);
+            stepsTitlesViews.remove(stepNumber);
+            stepsSubtitlesViews.remove(stepNumber);
+
+            // Update the number of steps
+            numberOfSteps--;
+
+            // Update the active step if necessary
+            if (activeStep == stepNumber) {
+                activeStep = Math.max(0, activeStep - 1);
+            } else if (activeStep > stepNumber) {
+                activeStep--;
+            }
+
+            // Update the completed steps array
+            boolean[] newCompletedSteps = new boolean[numberOfSteps + 1];
+            System.arraycopy(completedSteps, 0, newCompletedSteps, 0, stepNumber);
+            System.arraycopy(completedSteps, stepNumber + 1, newCompletedSteps, stepNumber, numberOfSteps - stepNumber);
+            completedSteps = newCompletedSteps;
+        }
+
+        // Refresh the layout
+        initializeForm();
+        goToStep(activeStep, true);
+    }
+
     /**
      * Set the active step as completed
      */
