@@ -261,6 +261,17 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             TextView stepNumberTextView = stepLayout.findViewById(R.id.step_number);
             stepNumberTextView.setText(String.valueOf(i + 1));
         }
+        // Hide vertical lines for the last step
+        if (!stepLayouts.isEmpty()) {
+            LinearLayout lastStepLayout = stepLayouts.get(stepLayouts.size() - 1);
+            View verticalLineSubtitle = lastStepLayout.findViewById(R.id.vertical_line_subtitle);
+            View verticalLineContent = lastStepLayout.findViewById(R.id.vertical_line_content);
+            View verticalLineNext = lastStepLayout.findViewById(R.id.vertical_line_next);
+            verticalLineSubtitle.setVisibility(View.INVISIBLE);
+            verticalLineContent.setVisibility(View.INVISIBLE);
+            verticalLineNext.setVisibility(View.INVISIBLE);
+        }
+
         goToStep(activeStep, true);
     }
 
