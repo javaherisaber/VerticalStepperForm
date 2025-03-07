@@ -255,8 +255,12 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
             completedSteps = newCompletedSteps;
         }
 
-        // Refresh the layout
-        initializeForm();
+        // update step numbers
+        for (int i = 0; i < stepLayouts.size(); i++) {
+            LinearLayout stepLayout = stepLayouts.get(i);
+            TextView stepNumberTextView = stepLayout.findViewById(R.id.step_number);
+            stepNumberTextView.setText(String.valueOf(i + 1));
+        }
         goToStep(activeStep, true);
     }
 
