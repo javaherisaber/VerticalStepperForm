@@ -275,6 +275,44 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         goToStep(activeStep, true);
     }
 
+    public void hideEditButton(int stepNumber) {
+        if (stepNumber < 0 || stepNumber >= stepLayouts.size()) {
+            Log.e(TAG, "Invalid step number: " + stepNumber);
+            return;
+        }
+
+        LinearLayout stepLayout = stepLayouts.get(stepNumber);
+        ImageView editStep = stepLayout.findViewById(R.id.edit_step);
+        editStep.setVisibility(View.GONE);
+    }
+
+    public void disableStepFromOpening(int stepNumber) {
+        if (stepNumber < 0 || stepNumber >= stepLayouts.size()) {
+            Log.e(TAG, "Invalid step number: " + stepNumber);
+            return;
+        }
+
+        LinearLayout stepLayout = stepLayouts.get(stepNumber);
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+        stepHeader.setOnClickListener(null); // Disable the click event for the step header
+    }
+
+    public void enableStepForOpening(final int stepNumber) {
+        if (stepNumber < 0 || stepNumber >= stepLayouts.size()) {
+            Log.e(TAG, "Invalid step number: " + stepNumber);
+            return;
+        }
+
+        LinearLayout stepLayout = stepLayouts.get(stepNumber);
+        RelativeLayout stepHeader = stepLayout.findViewById(R.id.step_header);
+        stepHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToStep(stepNumber, false);
+            }
+        });
+    }
+
     /**
      * Set the active step as completed
      */
