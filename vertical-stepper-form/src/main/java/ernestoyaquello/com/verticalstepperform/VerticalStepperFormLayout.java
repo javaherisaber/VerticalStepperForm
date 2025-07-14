@@ -100,6 +100,9 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
     protected Context context;
     protected Activity activity;
 
+    private long lastClickTime = 0;
+    private static final long DEBOUNCE_DELAY_MS = 300;
+
     private static final String TAG = "VerticalStepperFormLayout";
 
     public VerticalStepperFormLayout(Context context) {
@@ -308,6 +311,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         stepHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastClickTime < DEBOUNCE_DELAY_MS) {
+                    return;
+                }
+                lastClickTime = currentTime;
                 goToStep(stepNumber, false);
             }
         });
@@ -746,6 +754,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         stepHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastClickTime < DEBOUNCE_DELAY_MS) {
+                    return;
+                }
+                lastClickTime = currentTime;
                 goToStep(stepNumber, false);
             }
         });
@@ -756,6 +769,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastClickTime < DEBOUNCE_DELAY_MS) {
+                    return;
+                }
+                lastClickTime = currentTime;
                 if (stepNumber == (numberOfSteps - 1) && !showConfirmationStep) {
                     prepareSendingAndSend();
                 } else {
@@ -1182,6 +1200,11 @@ public class VerticalStepperFormLayout extends LinearLayout implements View.OnCl
 
     @Override
     public void onClick(View v) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastClickTime < DEBOUNCE_DELAY_MS) {
+            return;
+        }
+        lastClickTime = currentTime;
         String previousNavigationButtonTag =
                 context.getString(R.string.vertical_form_stepper_form_down_previous);
         if (v.getTag().equals(previousNavigationButtonTag)) {
